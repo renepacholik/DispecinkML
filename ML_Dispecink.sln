@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30503.244
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoML", "AutoML\AutoML.csproj", "{D8920E07-4935-4F4C-B289-CE187815931E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UrgentnostML", "UrgentnostML\UrgentnostML.csproj", "{CAF00719-2421-4294-8E2E-D51BE28D5654}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelpersML", "HelpersML\HelpersML.csproj", "{22DCF835-C0C9-4CEC-8CF0-B9C59550FD02}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D8920E07-4935-4F4C-B289-CE187815931E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8920E07-4935-4F4C-B289-CE187815931E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8920E07-4935-4F4C-B289-CE187815931E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8920E07-4935-4F4C-B289-CE187815931E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAF00719-2421-4294-8E2E-D51BE28D5654}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAF00719-2421-4294-8E2E-D51BE28D5654}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAF00719-2421-4294-8E2E-D51BE28D5654}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAF00719-2421-4294-8E2E-D51BE28D5654}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22DCF835-C0C9-4CEC-8CF0-B9C59550FD02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22DCF835-C0C9-4CEC-8CF0-B9C59550FD02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22DCF835-C0C9-4CEC-8CF0-B9C59550FD02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22DCF835-C0C9-4CEC-8CF0-B9C59550FD02}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {51AC536D-6F8F-4C62-AE7F-74E9DA2C162D}
+	EndGlobalSection
+EndGlobal
