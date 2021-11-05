@@ -8,6 +8,7 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.ML" Version="1.6.0" />
 		<PackageReference Include="Microsoft.ML.LightGbm" Version="1.6.0" />
+		<PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
 	</ItemGroup>
 
 </Project>

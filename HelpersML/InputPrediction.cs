@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.ML.Data;
+﻿using Microsoft.ML.Data;
 
 namespace HelpersML
 {
@@ -8,6 +7,8 @@ namespace HelpersML
         [ColumnName("PredictedLabel")]
         public int UrgLabel { get; set; }
 
-       
+        [ColumnName("Score"), VectorType(2)]
+        public float[] Scores { get; set; }
+
     }
 }

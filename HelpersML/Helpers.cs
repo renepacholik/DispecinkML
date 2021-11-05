@@ -28,19 +28,20 @@ namespace HelpersML
             {
                 prediction = predictor.Predict(input);
             }
-            Console.WriteLine($"The message '{input.OrigText}' is classified as ");
+            Console.Write($"The message '{input.OrigText}' is classified as ");
             if (prediction.UrgLabel == 0) 
             {
-                Console.Write("'0'\n");
+                Console.Write("'0'");
             }
             else if (prediction.UrgLabel == 1) 
             {
-                Console.Write("'1'\n");
+                Console.Write("'1'");
             }
             else if (prediction.UrgLabel == 2) 
             {
-                Console.Write("'2'\n");
+                Console.Write("'2'");
             }
+            Console.Write($" with precision: '2': {prediction.Scores[0]:0.000}, '1': {prediction.Scores[1]:0.000}, '0': {prediction.Scores[2]:0.000}\n");
         }
 
         public class PerformanceTimer : IDisposable
