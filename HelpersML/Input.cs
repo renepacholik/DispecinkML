@@ -3,6 +3,8 @@
 
 namespace HelpersML
 {
+
+    //Schéma pro vstupní data
     public class Input
     {
         [LoadColumn(0), ColumnName("Label")]

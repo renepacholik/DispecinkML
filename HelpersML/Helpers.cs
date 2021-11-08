@@ -6,6 +6,8 @@ namespace HelpersML
 {
     public static class Helpers
     {
+
+        //Vypíše matici záměn obsahující počet správných a špatných předpovědí a metriky modelu
         public static void OutputMultiClassMetrics(ITransformer model, IDataView data, MLContext mlContext)
         {
             var dataView = model.Transform(data);
@@ -18,6 +20,8 @@ namespace HelpersML
             Console.Write(confusionTable);
         }
 
+
+        //Určí urgentnost a vypíše jí společně s pravděpodobností každé úrovně
         public static void DetermineUrgentnost(PredictionEngine<Input, InputPrediction> predictor, string message) 
         {
             var input = new Input { OrigText = message };
@@ -44,6 +48,8 @@ namespace HelpersML
             Console.Write($" with precision: '2': {prediction.Scores[0]:0.000}, '1': {prediction.Scores[1]:0.000}, '0': {prediction.Scores[2]:0.000}\n");
         }
 
+
+        //Měří čas
         public class PerformanceTimer : IDisposable
         {
             private readonly string _message;

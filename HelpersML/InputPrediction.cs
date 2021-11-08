@@ -2,6 +2,8 @@
 
 namespace HelpersML
 {
+
+    //Schéma pro předpovídaná data
     public class InputPrediction
     {
         [ColumnName("PredictedLabel")]
