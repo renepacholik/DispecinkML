@@ -31,7 +31,7 @@ namespace AutoML
             }
 
             /*Vytvoření nastavení
-                OptimizingMetric vybýrá metriku podle které má vybrat nejlepšího trenéra
+                OptimizingMetric vybírá metriku podle které má vybrat nejlepšího trenéra
                 MaxExperimentTimeInSeconds nastaví čas experimentu*/
             var settings = new MulticlassExperimentSettings()
                 {
@@ -52,7 +52,7 @@ namespace AutoML
                 {
                     if (detail.ValidationMetrics != null)
                     {
-                        Console.WriteLine($"\n||Model||: {detail.TrainerName}");
+                        Console.WriteLine($"\n||Trainer||: {detail.TrainerName}");
                         Helpers.OutputMultiClassMetrics(detail.Model, data, mlContext);
                         Console.WriteLine($"\n|Time|: {detail.RuntimeInSeconds:###0.000}s\n");
                     }

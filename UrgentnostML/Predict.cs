@@ -1,5 +1,6 @@
 ﻿using HelpersML;
 using Microsoft.ML;
+using Serilog;
 using System;
 using System.IO;
 
@@ -9,7 +10,8 @@ namespace UrgentnostML
     {
         private static DataViewSchema dataSchema;
         private static MLContext mlContext;
-        public static void Train(int trainerPosition) {
+        public static void Train(int trainerPosition, int iterations, bool cmd) {
+            ILogger logger;
 
             mlContext = new MLContext();
             //Načtení dat za pomocí schéma Input a určení oddělovače
@@ -20,20 +22,23 @@ namespace UrgentnostML
                 .Append(mlContext.Transforms.CopyColumns("Features", "FeaturesText"))
                 .Append(mlContext.Transforms.NormalizeLpNorm("Features", "Features"));
 
-            Console.WriteLine("How many iterations would you like to go through?\n(Enter a number of iterations or press \"Enter\" for a default value of 100 iterations.)");
-
-            //Volba počtu iterací
-            String input = Console.ReadLine();
-            if (int.TryParse(input, out int iterations) && iterations > 0)
+            if (cmd == false)
             {
-                Console.WriteLine("Number of iterations selected: " + iterations);
-            }
-            else
-            {
-                iterations = 100;
-                Console.WriteLine("Using the default number of iterations: " + iterations);
-            }
 
+                Console.WriteLine("How many iterations would you like to go through?\n(Enter a number of iterations or press \"Enter\" for a default value of 100 iterations.)");
+
+                //Volba počtu iterací
+                String input = Console.ReadLine();
+                if (int.TryParse(input, out iterations) && iterations > 0)
+                {
+                    Console.WriteLine("Number of iterations selected: " + iterations);
+                }
+                else
+                {
+                    iterations = 100;
+                    Console.WriteLine("Using the default number of iterations: " + iterations);
+                }
+            }
             //Vytvoření výchozího trenéra
             var trainer = mlContext.MulticlassClassification.Trainers.LightGbm("Label", "Features", numberOfIterations: iterations)
                         .Append(mlContext.Transforms.Conversion.MapKeyToValue("PredictedLabel", "PredictedLabel"));
@@ -42,7 +47,15 @@ namespace UrgentnostML
             switch (trainerPosition)
             {
                 case 1:
-                    Console.WriteLine("Using the default trainer LightGbm");
+                    if (cmd == true) 
+                    {
+                        Log.Information("Using the default trainer LightGbm");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Using the default trainer LightGbm");
+                    }
+                   
                     break;
                 case 2:
                     trainer = mlContext.MulticlassClassification.Trainers.PairwiseCoupling(mlContext.BinaryClassification.Trainers.AveragedPerceptron(numberOfIterations: iterations))
@@ -85,19 +98,33 @@ namespace UrgentnostML
             //Vložení trenéra do pipeline
             var trainingPipeline = dataProcessPipeline.Append(trainer);
 
-            Console.WriteLine("Training the model..");
+            if (cmd == true) 
+            {
+                Log.Information("Training the model..");
+            }
+            else
+            {
+                Console.WriteLine("Training the model..");
+            }
+            
 
             ITransformer model;
             //Spuštění trénování s daty
-            using (new Helpers.PerformanceTimer("Training of the model"))
-            {
-                model = trainingPipeline.Fit(data);
-            }
+               model = trainingPipeline.Fit(data);  
             //Uložení modelu do zip douboru
-            mlContext.Model.Save(model, data.Schema, Path.Combine($"{Environment.CurrentDirectory}", "..", "..", "..", "UrgentnostMLModel.zip"));
+            mlContext.Model.Save(model, data.Schema, System.Configuration.ConfigurationManager.AppSettings["modelPathSave"]);
 
-            //Vypíše všechny metriky trenéra
-            Helpers.OutputMultiClassMetrics(model, data, mlContext);
+            if (cmd == true) 
+            {
+                //Vypíše všechny metriky modelu do logu
+                Helpers.OutputMultiClassMetricsToLog(model, data, mlContext);
+            }
+            else
+            {
+                //Vypíše všechny metriky modelu do konzole
+                Helpers.OutputMultiClassMetrics(model, data, mlContext);
+            }
+            
 
             
             
@@ -110,8 +137,9 @@ namespace UrgentnostML
             var data = mlContext.Data.LoadFromTextFile<Input>(System.Configuration.ConfigurationManager.AppSettings["dataPath"], hasHeader: true, separatorChar: '\t');
 
             dataSchema = data.Schema;
-            ITransformer model = mlContext.Model.Load(System.Configuration.ConfigurationManager.AppSettings["modelPath"],  out dataSchema);
+            ITransformer model = mlContext.Model.Load(System.Configuration.ConfigurationManager.AppSettings["modelPathLoad"],  out dataSchema);
             var predictor = mlContext.Model.CreatePredictionEngine<Input, InputPrediction>(model);
+
 
             Console.WriteLine("\nType a message to be checked or type \"exit\" to return to the menu.");
             String message;
@@ -119,9 +147,21 @@ namespace UrgentnostML
             {
                 if (string.IsNullOrWhiteSpace(message))
                     continue;
-                Helpers.DetermineUrgentnost(predictor, message);
+                Helpers.DetermineUrgentnost(predictor, message, false);
             }
 
+        }
+
+        public static void TestMessageFile(String message)
+        {
+            mlContext = new MLContext();
+            var data = mlContext.Data.LoadFromTextFile<Input>(System.Configuration.ConfigurationManager.AppSettings["dataPath"], hasHeader: true, separatorChar: '\t');
+
+            dataSchema = data.Schema;
+            ITransformer model = mlContext.Model.Load(System.Configuration.ConfigurationManager.AppSettings["modelPathLoad"], out dataSchema);
+            var predictor = mlContext.Model.CreatePredictionEngine<Input, InputPrediction>(model);
+
+            Helpers.DetermineUrgentnost(predictor, message, true);
         }
         
     }
