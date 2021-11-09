@@ -166,7 +166,7 @@ namespace UrgentnostML
                         Console.WriteLine(startup);
                         break;
                     default:
-                        Log.Information("Selected action did not match the options");
+                        Log.Information("Selected action did not match the options.");
                         Console.WriteLine("Your selected action does not match with the options.");
                         break;
                 }
