@@ -2,7 +2,7 @@ FORMÁT VSTUPNÍHO SOUBORU:
 	header: "Urgentnost"\t"OrigTest"
 	data:   int úroveňUrgentnosti\t"textZprávy"
 
-příklad:
+ příklad:
 Urgentnost	OrigText
 2	Dobrý den,na zítra tj. 23.7.2020 jsem měla domluvenou dálkovou správu v čase 9,00 - 10,00 hod. p. Vorlíček. Prosím o zrušení. Děkuji
 2	Prosím přenesení vyfiltrovaných dětí z jedné školky (programu) do druhé školky. děkujiBartůňková
@@ -33,3 +33,39 @@ POJMY:
 	Zde můžeme vidět, že příklady označené urgentností 0 byly správně určené jako '0' 1382x, špatně určené jako '1' 32x a jako '2' 28x.
 
 	Více informací: https://docs.microsoft.com/en-us/dotnet/machine-learning/resources/metrics
+
+OVLÁDÁNÍ:
+	
+	App.config - errorLogPath a logPath by měli vést pouze ke složce kde se soubory budou ukládat. Jinak program uloží logy do složky Logs v aktuálním adresáři.
+
+		Pro přeskočení některých parametrů nahraďte hodnotu písmenem 'd' pro výchozí hodnotu. Toto má být použito, pokud se potřebujete dostat k argumentu, kterému předchází argument, jež nechcete změnit.
+		př.: UrgentnostML p "Potřebuji akutní pomoc" d C:\Users\Dash\Desktop\test\UrgentnostML.zip
+
+	Trénovaní: UrgentnostML t cestaKeZdrojiDat početIterací čísloTrenéra cestaKUloženíModeluANázev (Zde je povinný argumnet cestaKeZdrojiDat)
+
+		   	cestaKeZdrojiDat - Cesta kde je uložený soubor s daty na trénování ve správném formátu viz. FORMÁT VSTUPNÍHO SOUBORU
+			početIterací - Celé kladné číslo představující počet iterací, kterých má ternér udělat (Více iterací = delší doba trénování, ale přesnější model)
+			čísloTrenéra - Číselné označení jména trenéra pro použítí k vytvoření modelu. viz tabulka níže
+
+				'1' - LightGbm
+                   		'2' - AveragedPerceptron
+                   		'3' - SdcaMaximumEntropy
+                   		'4' - SymbolicSgdLogisticRegression
+                  		'5' - LinearSvm
+                  		'6' - SgdCalibrated
+                  		'7' - SgdNonCalibrated
+
+			cestaKUloženíModeluANázev - Cesta kam se uloží model po dokončení tréninku. V cestě musí být i název souboru s koncovkou .zip. Pokud cesta bude prázdná nebo neplatná program zvolí cestu sám a to do akutálního adresáře. Pokud nebude zadán název souboru končící .zip, bude nastaven výchozí název UrgentnostML.zip.
+
+	      př.: UrgentnostML t C:\Users\Dash\Desktop\.NET_ML\ML_Dispecink\ML_Dispecink\UrgentnostML\Input\extracted_csv 120 2 C:\Users\Dash\Desktop\test\UrgentnostML.zip
+
+	Předpovídání: UrgentnostML p textZprávy cestaKUloženíANázev cestaKModelu (Zde je povinný argument textzprávy)
+
+			textZprávy - Zprává u které chcete zjistit urgentnost. Použijte formát: "text"
+			cestaKUloženíANázev - Cesta kam se uloží vyhodnocení. V cestě musí být i název souboru s koncovkou .txt.okud cesta bude prázdná nebo neplatná program zvolí cestu sám a to do akutálního adresáře.. Pokud nebude zadán název souboru končící .txt, bude nastaven výchozí název out.txt. 
+			cestaKModelu - Cesta kde je uložen model v .zip, který chcete použít pro vyhodnocení.
+
+				
+	      př.: UrgentnostML p "Potřebuji akutní pomoc" C:\Users\Dash\Desktop\test\out.txt C:\Users\Dash\Desktop\test\UrgentnostML.zip
+
+   

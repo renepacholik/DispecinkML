@@ -26,17 +26,24 @@ namespace HelpersML
 
         public static void OutputMultiClassMetricsToLog(ITransformer model, IDataView data, MLContext mlContext)
         {
-            var dataView = model.Transform(data);
-            var metrics = mlContext.MulticlassClassification.Evaluate(dataView);
-            var confusionTable = metrics.ConfusionMatrix.GetFormattedConfusionTable();
-            Log.Information("|Metriky modelu|\n"+
-                            $"Micro accuracy: {metrics.MicroAccuracy}\n"+
-                            $"Macro accuracy: {metrics.MacroAccuracy}\n"+
-                            $"Log Loss: {metrics.LogLoss}\n" +
-                            $"Log Loss reduction: {metrics.LogLossReduction}\n" +
-                            confusionTable);
-           
-        }
+            try
+            {
+                var dataView = model.Transform(data);
+                var metrics = mlContext.MulticlassClassification.Evaluate(dataView);
+                var confusionTable = metrics.ConfusionMatrix.GetFormattedConfusionTable();
+                Log.Information("|Metriky modelu|\n" +
+                                $"Micro accuracy: {metrics.MicroAccuracy}\n" +
+                                $"Macro accuracy: {metrics.MacroAccuracy}\n" +
+                                $"Log Loss: {metrics.LogLoss}\n" +
+                                $"Log Loss reduction: {metrics.LogLossReduction}\n" +
+                                confusionTable);
+            }
+            catch (Exception e)
+            {
+                Log.Error("An unexpected error has occurred:\n" + e.StackTrace);
+            }
+
+        } 
 
 
         //Určí urgentnost a vypíše jí společně s pravděpodobností každé úrovně
@@ -65,14 +72,34 @@ namespace HelpersML
 
             
              text += $"'2': {prediction.Scores[0]:0.000}, '1': {prediction.Scores[1]:0.000}, '0': {prediction.Scores[2]:0.000}";
-
-            if (cmd == true)
-            {
-                File.WriteAllText(System.Configuration.ConfigurationManager.AppSettings["predictPath"], text);
+            try { 
+                if (cmd == true)
+                {
+                    //Kontrola cesty k uložení předpovědi
+                    if (!File.Exists(System.Configuration.ConfigurationManager.AppSettings["predictPath"]) & Directory.Exists(System.Configuration.ConfigurationManager.AppSettings["predictPath"]))
+                    {
+                        UpdateConfig("predictPath",Path.Combine(System.Configuration.ConfigurationManager.AppSettings["predictPath"], "out.txt"));
+                    }
+                    else
+                    {
+                        UpdateConfig("predictPath", Path.Combine(Directory.GetCurrentDirectory(), "Prediction", "out.txt"));
+                    }
+                    //Zapsání předpovědi do souboru
+                    File.WriteAllText(System.Configuration.ConfigurationManager.AppSettings["predictPath"], text);
+                    Log.Information("The prediction has been written to "+ System.Configuration.ConfigurationManager.AppSettings["predictPath"]);
+                }
+                else
+                {
+                    Console.WriteLine(text);
+                }
             }
-            else
+            catch (FileNotFoundException e)
             {
-                Console.WriteLine(text);
+                Log.Error("There was an error with a file path when PREDICTING A MESSAGE:\n" + e.StackTrace);
+            }
+            catch (Exception e)
+            {
+                Log.Error("An unexpected error has occurred:\n" + e.StackTrace);
             }
         }
 

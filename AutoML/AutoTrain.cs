@@ -2,7 +2,9 @@
 using Microsoft.ML;
 using Microsoft.ML.AutoML;
 using Microsoft.ML.Data;
+using Serilog;
 using System;
+using System.IO;
 
 namespace AutoML
 {
@@ -10,8 +12,9 @@ namespace AutoML
     {
         public static void AutoTraining()
         {
+            ILogger logger;
             var mlContext = new MLContext();
-
+            try { 
             //Načtení dat za pomocí schéma Input a určení oddělovače
             var data = mlContext.Data.LoadFromTextFile<Input>(System.Configuration.ConfigurationManager.AppSettings["dataPath"], hasHeader: true, separatorChar: '\t');
 
@@ -68,6 +71,16 @@ namespace AutoML
                 Helpers.OutputMultiClassMetrics(result.BestRun.Model, data, mlContext);
 
             }
+            catch (FileNotFoundException e)
+            {
+                Log.Error("There was an error with a file path when AUTO TRAINING:\n" + e.StackTrace);
+            }
+            catch (Exception e)
+            {
+                Log.Error("An unexpected error has occurred:\n" + e.StackTrace);
+            }
+
+        }
         }
     }
 
