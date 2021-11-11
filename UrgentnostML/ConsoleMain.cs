@@ -161,6 +161,10 @@ namespace UrgentnostML
                                         File.Create(args[2]).Dispose();
                                         path = args[2];
                                     }
+                                    else
+                                    {
+                                        path = System.Configuration.ConfigurationManager.AppSettings["predictPath"];
+                                    }
                                 }
                                 if (args.Length >= 4)
                                 {
