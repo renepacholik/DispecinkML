@@ -223,7 +223,7 @@ namespace UrgentnostML
                 {
                     if (string.IsNullOrWhiteSpace(message))
                         continue;
-                    Helpers.DetermineUrgentnost(predictor, message, false);
+                    Helpers.DetermineUrgentnost(predictor, message, false, "");
                 }
                 }
             catch (FileNotFoundException e)
@@ -237,7 +237,7 @@ namespace UrgentnostML
 
         }
 
-        public static void TestMessageFile(String message)
+        public static void TestMessageFile(string message, string path)
         {
             mlContext = new MLContext();
             try { 
@@ -247,7 +247,7 @@ namespace UrgentnostML
                 ITransformer model = mlContext.Model.Load(System.Configuration.ConfigurationManager.AppSettings["modelPathLoad"], out dataSchema);
                 var predictor = mlContext.Model.CreatePredictionEngine<Input, InputPrediction>(model);
 
-                Helpers.DetermineUrgentnost(predictor, message, true);
+                Helpers.DetermineUrgentnost(predictor, message, true, path);
             }
             catch (FileNotFoundException e)
             {

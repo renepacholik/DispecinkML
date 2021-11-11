@@ -73,11 +73,11 @@ namespace AutoML
             }
             catch (FileNotFoundException e)
             {
-                Log.Error("There was an error with a file path when AUTO TRAINING:\n" + e.StackTrace);
+                Log.Error("The file was not found when AUTO TRAINING:\n" + e.Message + "\n" + e.StackTrace);
             }
             catch (Exception e)
             {
-                Log.Error("An unexpected error has occurred:\n" + e.StackTrace);
+                Log.Error("An unexpected error has occurred:\n" + e.Message + "\n" + e.StackTrace);
             }
 
         }

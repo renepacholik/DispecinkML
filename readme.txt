@@ -45,7 +45,7 @@ OVLÁDÁNÍ:
 
 		   	cestaKeZdrojiDat - Cesta kde je uložený soubor s daty na trénování ve správném formátu viz. FORMÁT VSTUPNÍHO SOUBORU
 			početIterací - Celé kladné číslo představující počet iterací, kterých má ternér udělat (Více iterací = delší doba trénování, ale přesnější model)
-			čísloTrenéra - Číselné označení jména trenéra pro použítí k vytvoření modelu. viz tabulka níže
+			čísloTrenéra - Číselné označení jména trenéra pro použítí k vytvoření modelu.(viz tabulka níže) Jako nejlepšího trenéra jsem vybral číslo 1 LightGbm.
 
 				'1' - LightGbm
                    		'2' - AveragedPerceptron

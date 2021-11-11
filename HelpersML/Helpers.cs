@@ -40,14 +40,14 @@ namespace HelpersML
             }
             catch (Exception e)
             {
-                Log.Error("An unexpected error has occurred:\n" + e.StackTrace);
+                Log.Error("An unexpected error has occurred:\n" + e.Message + "\n" + e.StackTrace);
             }
 
         } 
 
 
         //Určí urgentnost a vypíše jí společně s pravděpodobností každé úrovně
-        public static void DetermineUrgentnost(PredictionEngine<Input, InputPrediction> predictor, string message, bool cmd) 
+        public static void DetermineUrgentnost(PredictionEngine<Input, InputPrediction> predictor, string message, bool cmd, string path) 
         {
             var input = new Input { OrigText = message };
 
@@ -72,21 +72,26 @@ namespace HelpersML
 
             
              text += $"'2': {prediction.Scores[0]:0.000}, '1': {prediction.Scores[1]:0.000}, '0': {prediction.Scores[2]:0.000}";
-            try { 
+            try
+            {
                 if (cmd == true)
                 {
+
                     //Kontrola cesty k uložení předpovědi
-                    if (!File.Exists(System.Configuration.ConfigurationManager.AppSettings["predictPath"]) & Directory.Exists(System.Configuration.ConfigurationManager.AppSettings["predictPath"]))
+                    if (!File.Exists(path) & Directory.Exists(path))
                     {
-                        UpdateConfig("predictPath",Path.Combine(System.Configuration.ConfigurationManager.AppSettings["predictPath"], "out.txt"));
+                        path =  Path.Combine(path, "out.txt");
                     }
-                    else
+                    else if (!File.Exists(path))
                     {
-                        UpdateConfig("predictPath", Path.Combine(Directory.GetCurrentDirectory(), "Prediction", "out.txt"));
+                        Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "Prediction"));
+                       path = Path.Combine(Directory.GetCurrentDirectory(), "Prediction", "out.txt");
                     }
+
                     //Zapsání předpovědi do souboru
-                    File.WriteAllText(System.Configuration.ConfigurationManager.AppSettings["predictPath"], text);
-                    Log.Information("The prediction has been written to "+ System.Configuration.ConfigurationManager.AppSettings["predictPath"]);
+                    File.WriteAllText(path, text);
+                    
+                    Log.Information("The prediction has been written to " + path);
                 }
                 else
                 {
@@ -95,11 +100,11 @@ namespace HelpersML
             }
             catch (FileNotFoundException e)
             {
-                Log.Error("There was an error with a file path when PREDICTING A MESSAGE:\n" + e.StackTrace);
+                Log.Error("The file was not found when PREDICTING A MESSAGE:\n" +e.Message+"\n"+ e.StackTrace);
             }
             catch (Exception e)
             {
-                Log.Error("An unexpected error has occurred:\n" + e.StackTrace);
+                Log.Error("An unexpected error has occurred:\n" + e.Message + "\n"+ e.StackTrace);
             }
         }
 

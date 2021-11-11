@@ -11,9 +11,10 @@ namespace UrgentnostML
         static void Main(string[] args)
         {
             //Kontrola cesty ke složce s logy
-            if (!Directory.Exists(System.Configuration.ConfigurationManager.AppSettings["logPath"]))
+            if (!Directory.Exists(System.Configuration.ConfigurationManager.AppSettings["logPath"]) | !Directory.Exists(System.Configuration.ConfigurationManager.AppSettings["errorLogPath"]))
             {
                 Helpers.UpdateConfig("logPath", Path.Combine(Directory.GetCurrentDirectory(), "Logs"));
+                Helpers.UpdateConfig("errorLogPath", Path.Combine(Directory.GetCurrentDirectory(), "Logs"));
             }
             //Deklarace a inicializace logování
             Log.Logger = new LoggerConfiguration()
@@ -28,6 +29,7 @@ namespace UrgentnostML
                     x.Filter.ByIncludingOnly(e => e.Level == Serilog.Events.LogEventLevel.Error);
                 })
                 .CreateLogger();
+            Log.Error("test");
             Log.Information("|SESSION START|");
             //Zvolená akce
             string action = "";
@@ -41,6 +43,7 @@ namespace UrgentnostML
             string message = "";
             //Jestli byl program spuštěn z programové řádky
             bool cmd = false;
+            string path = "";
                 
             //Menu
             string startup = "Choose action: 'a' - Finds the best trainer for your data.\n" +
@@ -154,7 +157,9 @@ namespace UrgentnostML
                                 {
                                     if (!args[2].Equals("d"))
                                     {
-                                        Helpers.UpdateConfig("predictPath", args[2]);
+                                        Directory.CreateDirectory(Path.GetDirectoryName(args[2]));
+                                        File.Create(args[2]).Dispose();
+                                        path = args[2];
                                     }
                                 }
                                 if (args.Length >= 4)
@@ -165,7 +170,7 @@ namespace UrgentnostML
                                     }
                                 }
 
-                                Predict.TestMessageFile(message);
+                                Predict.TestMessageFile(message, path);
                                 action = "exit";
                             }
                             else
