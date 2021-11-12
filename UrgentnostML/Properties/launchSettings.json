@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "UrgentnostML": {
+      "commandName": "Project",
+      "commandLineArgs": "t d:\\Vyvoj\\Vyvoj-NET\\DispecinkML\\UrgentnostML\\Input\\\\extracted_csv 120 2 d:\\Vyvoj\\Vyvoj-NET\\DispecinkML\\UrgentnostML\\UrgentnostMLModel.zip "
+    }
+  }
+}
