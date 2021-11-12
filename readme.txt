@@ -58,7 +58,7 @@ OVLÁDÁNÍ:
 
 			cestaKUloženíModeluANázev - Cesta kam se uloží model po dokončení tréninku. V cestě musí být i název souboru s koncovkou .zip. Pokud cesta bude prázdná nebo neplatná program zvolí cestu sám a to do akutálního adresáře. Pokud nebude zadán název souboru končící .zip, bude nastaven výchozí název UrgentnostML.zip.
 
-	      př.: UrgentnostML t C:\Users\Dash\Desktop\.NET_ML\ML_Dispecink\ML_Dispecink\UrgentnostML\Input\extracted_csv 120 2 C:\Users\Dash\Desktop\test\UrgentnostML.zip
+	      př.: UrgentnostML t d:\Vyvoj\Vyvoj-NET\DispecinkML\UrgentnostML\Input\\extracted_csv 120 2 d:\Vyvoj\Vyvoj-NET\DispecinkML\UrgentnostML\UrgentnostMLModel.zip 
 
 	Předpovídání: UrgentnostML p textZprávy cestaKUloženíANázev cestaKModelu (Zde je povinný argument textzprávy)
 
