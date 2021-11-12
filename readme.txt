@@ -36,7 +36,8 @@ POJMY:
 
 OVLÁDÁNÍ:
 	
-	App.config - errorLogPath a logPath by měli vést pouze ke složce kde se soubory budou ukládat. Jinak program uloží logy do složky Logs v aktuálním adresáři.
+	Config - errorLogPath a logPath by měli vést pouze ke složce kde se soubory budou ukládat. Jinak program uloží logy do složky Logs v aktuálním adresáři.
+		 predictionPathType by měl obsahovat pouze ".txt" nebo ".json" podle toho jaký formát chcete u výsledného souboru. Pokud bude obsahovat jinou hodnotu nebo bude prázdný, výsledek se nevypíše. Pokud dáte do cesty uložení předpovědi soubor s koncovkou, program tuto koncovku smaže a nahradí jí koncovkou z configu.
 
 		Pro přeskočení některých parametrů nahraďte hodnotu písmenem 'd' pro výchozí hodnotu. Toto má být použito, pokud se potřebujete dostat k argumentu, kterému předchází argument, jež nechcete změnit.
 		př.: UrgentnostML p "Potřebuji akutní pomoc" d C:\Users\Dash\Desktop\test\UrgentnostML.zip

@@ -29,7 +29,6 @@ namespace UrgentnostML
                     x.Filter.ByIncludingOnly(e => e.Level == Serilog.Events.LogEventLevel.Error);
                 })
                 .CreateLogger();
-            Log.Error("test");
             Log.Information("|SESSION START|");
             //Zvolená akce
             string action = "";
@@ -157,9 +156,10 @@ namespace UrgentnostML
                                 {
                                     if (!args[2].Equals("d"))
                                     {
-                                        Directory.CreateDirectory(Path.GetDirectoryName(args[2]));
-                                        File.Create(args[2]).Dispose();
-                                        path = args[2];
+                                        path = Path.ChangeExtension(args[2], System.Configuration.ConfigurationManager.AppSettings["predictFileType"]);
+                                        Directory.CreateDirectory(Path.GetDirectoryName(path));
+                                        File.Create(path).Dispose();
+                                       
                                     }
                                     else
                                     {

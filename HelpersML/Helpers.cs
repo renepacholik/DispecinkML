@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.IO;
 using Microsoft.ML;
 using Serilog;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace HelpersML
 {
@@ -76,22 +78,48 @@ namespace HelpersML
             {
                 if (cmd == true)
                 {
-
+                    string end = System.Configuration.ConfigurationManager.AppSettings["predictFileType"];
                     //Kontrola cesty k uložení předpovědi
                     if (!File.Exists(path) & Directory.Exists(path))
                     {
-                        path =  Path.Combine(path, "out.txt");
+                        path =  Path.Combine(path, "out"+end);
                     }
                     else if (!File.Exists(path))
                     {
                         Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "Prediction"));
-                       path = Path.Combine(Directory.GetCurrentDirectory(), "Prediction", "out.txt");
+                        path = Path.Combine(Directory.GetCurrentDirectory(), "Prediction", "out"+end);
                     }
-
-                    //Zapsání předpovědi do souboru
-                    File.WriteAllText(path, text);
                     
-                    Log.Information("The prediction has been written to " + path);
+                    if (end.Equals(".txt"))
+                    {
+                        //Zapsání předpovědi do txt souboru
+                        File.WriteAllText(path, text);
+                        Log.Information("The prediction has been written to " + path + " with file type " + end);
+                    }
+                    else if (end.Equals(".json"))
+                    {
+                        string[] textArr = text.Split(";");
+                        List<JsonHelper.predictData> data = new List<JsonHelper.predictData>();
+                        data.Add(new JsonHelper.predictData()
+                        {
+                            prediction = int.Parse(textArr[0]),
+                            percentage0 = Math.Round(prediction.Scores[2], 3),
+                            percentage1 = Math.Round(prediction.Scores[1], 3),
+                            percentage2 = Math.Round(prediction.Scores[0], 3)
+
+                        });
+
+                        string json = JsonConvert.SerializeObject(data.ToArray());
+                        
+                        File.WriteAllText(path, json);
+                        Log.Information("The prediction has been written to " + path + " with file type " + end);
+                    }
+                    else
+                    {
+                        Log.Error("There wasn't found a valid data type in config file at value predictFileType.");
+                    }
+                    
+                    
                 }
                 else
                 {
