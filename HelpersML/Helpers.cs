@@ -99,17 +99,12 @@ namespace HelpersML
                     else if (end.Equals(".json"))
                     {
                         string[] textArr = text.Split(";");
-                        List<JsonHelper.predictData> data = new List<JsonHelper.predictData>();
-                        data.Add(new JsonHelper.predictData()
-                        {
-                            prediction = int.Parse(textArr[0]),
-                            percentage0 = Math.Round(prediction.Scores[2], 3),
-                            percentage1 = Math.Round(prediction.Scores[1], 3),
-                            percentage2 = Math.Round(prediction.Scores[0], 3)
-
-                        });
-
-                        string json = JsonConvert.SerializeObject(data.ToArray());
+                        PredictData oPredictData = new PredictData();
+                        oPredictData.prediction = int.Parse(textArr[0]);
+                        oPredictData.percentage0 = Math.Round(prediction.Scores[2], 3);
+                        oPredictData.percentage1 = Math.Round(prediction.Scores[1], 3);
+                        oPredictData.percentage2 = Math.Round(prediction.Scores[0], 3);
+                        string json = JsonConvert.SerializeObject(oPredictData);
                         
                         File.WriteAllText(path, json);
                         Log.Information("The prediction has been written to " + path + " with file type " + end);
@@ -168,5 +163,12 @@ namespace HelpersML
 
             ConfigurationManager.RefreshSection("appSettings");
         }
+    }
+    public class PredictData
+    {
+        public int prediction;
+        public double percentage0;
+        public double percentage1;
+        public double percentage2;
     }
 }

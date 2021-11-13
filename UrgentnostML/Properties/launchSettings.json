@@ -2,7 +2,7 @@
   "profiles": {
     "UrgentnostML": {
       "commandName": "Project",
-      "commandLineArgs": "t d:\\Vyvoj\\Vyvoj-NET\\DispecinkML\\UrgentnostML\\Input\\\\extracted_csv 120 2 d:\\Vyvoj\\Vyvoj-NET\\DispecinkML\\UrgentnostML\\UrgentnostMLModel.zip "
+      "commandLineArgs": "p \"Jméno: Martina Kostíková E-mail: msvalchov@centrum.cz Telefon: 775115619 IČD: 10992 Naléhavost: Není to urgentní (s problémem normálně funguji, ale v budoucnu ho chci vyřešit) Důvod naléhavosti: Poprosím o převedení programu stravné a sklad do jiného PC. --- Další informace o uživateli a programu jsou dostupné ve výše uvedeném odkazu na e-mail ---\" C:\\VisGCA\\CACHE\\Develop\\Dispecink\\Temp\\2021111321131765320-Wide.json"
     }
   }
 }
