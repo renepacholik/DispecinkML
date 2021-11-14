@@ -151,15 +151,16 @@ namespace UrgentnostML
                                 if (args.Length >= 2)
                                 {
                                     message = args[1];
+                                    Log.Information("message=" + message);
                                 }
                                 if (args.Length >= 3)
                                 {
                                     if (!args[2].Equals("d"))
                                     {
                                         path = Path.ChangeExtension(args[2], System.Configuration.ConfigurationManager.AppSettings["predictFileType"]);
+                                        Log.Information("path=" + path);
                                         Directory.CreateDirectory(Path.GetDirectoryName(path));
                                         File.Create(path).Dispose();
-                                       
                                     }
                                     else
                                     {
@@ -171,6 +172,7 @@ namespace UrgentnostML
                                     if (!args[3].Equals("d"))
                                     {
                                         Helpers.UpdateConfig("modelPathLoad", args[3]);
+                                        Log.Information("modelPathLoad=" + args[3]);
                                     }
                                 }
 

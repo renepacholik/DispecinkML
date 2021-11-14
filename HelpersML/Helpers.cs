@@ -108,13 +108,12 @@ namespace HelpersML
                         
                         File.WriteAllText(path, json);
                         Log.Information("The prediction has been written to " + path + " with file type " + end);
+                        Log.Information("prediction" + textArr[0] + "; percentage0="+ Math.Round(prediction.Scores[2], 3).ToString() + "; percentage1=" + Math.Round(prediction.Scores[1], 3).ToString() + "; percentage2=" + Math.Round(prediction.Scores[0], 3).ToString());
                     }
                     else
                     {
                         Log.Error("There wasn't found a valid data type in config file at value predictFileType.");
                     }
-                    
-                    
                 }
                 else
                 {
